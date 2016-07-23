@@ -8,9 +8,8 @@ Pulls random images from Derpibooru for your Discord channel enjoyment.
 2. `git clone --recursive https://github.com/BytewaveMLP/randibooru`
 3. Fill in your information for Derpibooru and Discord
 4. `pyrhon3 randibooru.py`
-5. Complete and use this link to invite your bot to a server:
-   
-   https://discordapp.com/oauth2/authorize?client_id=YOUR_DISCORD_CLIENT_ID_HERE&scope=bot&permissions=19456
+5. Complete and use this link to invite your bot to a server:  
+   https://discordapp.com/oauth2/authorize?client_id=YOUR_CLIENT_ID_HERE&scope=bot&permissions=19456
 6. ???
 7. Profit!
 

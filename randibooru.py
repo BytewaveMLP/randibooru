@@ -45,7 +45,7 @@ async def on_message(message):
 				result = results[0]
 				print('Result:   ', result.url)
 
-				await client.send_message(message.channel, requester.mention + ' (' + query + '): ' + result.url)
+				await client.send_message(message.channel, requester.mention + ' (' + query + '): ' + result.url + "\nFull image: " + result.image)
 		else:
 			print("User does not have access.")
 

@@ -10,6 +10,7 @@ import asyncio
 from DerPyBooru.derpibooru import Search, sort
 
 client = discord.Client()
+helpgame = discord.Game(name = COMMAND_PREFIX + COMMAND_NAME + " <berpi query>", url = "", type = 0)
 
 @client.event
 async def on_ready():
@@ -17,6 +18,7 @@ async def on_ready():
 	print(client.user.name)
 	print(client.user.id)
 	print('------')
+	await client.change_status(game = helpgame, idle = False)
 
 @client.event
 async def on_message(message):

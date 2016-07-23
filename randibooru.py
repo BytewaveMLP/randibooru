@@ -1,5 +1,7 @@
 DISCORD_API_TOKEN    = ""
 DERPIBOORU_API_TOKEN = ""
+BOT_NAME             = "Randibooru"
+REQUIRED_ROLE        = BOT_NAME + " User"
 COMMAND_PREFIX       = "!"
 COMMAND_NAME         = "rb"
 
@@ -27,14 +29,14 @@ async def on_message(message):
 		requester = message.author
 		print('Requester:', requester.name, '|', requester.id)
 
-		if requester.id not in USER_BLACKLIST:
+		if requester.id not in USER_BLACKLIST and REQUIRED_ROLE in [role.name for role in requester.roles]:
 			query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):] # Strip command from message text
 			print('Query:    ', query)
 
 			await client.send_typing(message.channel) # Typing notification while loading
 
 			search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
-			results = [image for image in search]
+			results = list(search)
 
 			if len(results) == 0:
 				print('Result:    No images found.')
@@ -45,7 +47,7 @@ async def on_message(message):
 
 				await client.send_message(message.channel, requester.mention + ' (' + query + '): ' + result.url)
 		else:
-			print("User blacklisted.")
+			print("User does not have access.")
 
 		print('========')
 

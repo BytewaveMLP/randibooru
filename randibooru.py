@@ -30,22 +30,26 @@ async def on_message(message):
 		print('Requester:', requester.name, '|', requester.id)
 
 		if requester.id not in USER_BLACKLIST and REQUIRED_ROLE in [role.name for role in requester.roles]:
-			query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):] # Strip command from message text
+			query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):].strip() # Strip command from message text
 			print('Query:    ', query)
-
-			await client.send_typing(message.channel) # Typing notification while loading
+			if query == '':
+				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images...')
+			else:
+				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images with query "`' + query + '`"...')
 
 			search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
 			results = list(search)
 
+			responseStr = requester.mention + (' (query: `' + query + '`)' if query != '' else '') + ' '
+
 			if len(results) == 0:
 				print('Result:    No images found.')
-				await client.send_message(message.channel, requester.mention + ' (' + query + '): No images found.')
+				await client.edit_message(response, responseStr + 'No images found.')
 			else:
 				result = results[0]
 				print('Result:   ', result.url)
 
-				await client.send_message(message.channel, requester.mention + ' (' + query + '): ' + result.url + "\nFull image: " + result.image)
+				await client.edit_message(response, responseStr + result.url + "\nFull image: " + result.image)
 		else:
 			print("User does not have access.")
 

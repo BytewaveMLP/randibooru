@@ -35,7 +35,7 @@ async def on_message(message):
 			if query == '':
 				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images...')
 			else:
-				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images with query "`' + query + '`"...')
+				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images with query `' + query + '`...')
 
 			search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
 			results = list(search)

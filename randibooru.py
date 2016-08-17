@@ -1,7 +1,6 @@
 DISCORD_API_TOKEN    = ""
 DERPIBOORU_API_TOKEN = ""
 BOT_NAME             = "Randibooru"
-REQUIRED_ROLE        = BOT_NAME + " User"
 COMMAND_PREFIX       = "!"
 COMMAND_NAME         = "rb"
 
@@ -29,7 +28,7 @@ async def on_message(message):
 		requester = message.author
 		print('Requester:', requester.name, '|', requester.id)
 
-		if requester.id not in USER_BLACKLIST and REQUIRED_ROLE in [role.name for role in requester.roles]:
+		if requester.id not in USER_BLACKLIST:
 			query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):].strip() # Strip command from message text
 			print('Query:    ', query)
 			if query == '':

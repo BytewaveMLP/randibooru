@@ -1,6 +1,5 @@
 DISCORD_API_TOKEN    = ""
 DERPIBOORU_API_TOKEN = ""
-BOT_NAME             = "Randibooru"
 COMMAND_PREFIX       = "!"
 COMMAND_NAME         = "rb"
 

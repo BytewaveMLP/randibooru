@@ -5,7 +5,9 @@ Pulls random images from Derpibooru for your Discord channel enjoyment.
 1. Install these libraries with `pip`, in order:
   - `discord.py`
   - `requests`
-2. `git clone --recursive https://github.com/BytewaveMLP/randibooru`
+  - `derpybooru`
+  (You might want to look into `virtualenv`s to avoid polluting your global package space)
+2. `git clone https://github.com/BytewaveMLP/randibooru`
 3. Fill in your information for Derpibooru and Discord
   - Obtain a client ID and API key for Discord [here](https://discordapp.com/developers/applications/me)
   - Obtain a Derpibooru API key [here](https://derpibooru.org/users/edit)

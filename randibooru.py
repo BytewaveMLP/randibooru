@@ -7,7 +7,7 @@ USER_BLACKLIST = []
 
 import discord
 import asyncio
-from DerPyBooru.derpibooru import Search, sort
+from derpibooru import Search, sort
 
 client = discord.Client()
 helpgame = discord.Game(name = COMMAND_PREFIX + COMMAND_NAME + " <derpi query>", url = "", type = 0)

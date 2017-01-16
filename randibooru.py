@@ -47,7 +47,7 @@ async def on_message(message):
 				result = results[0]
 				print('Result:   ', result.url)
 
-				await client.edit_message(response, responseStr + result.url + "\nFull image: " + result.image)
+				await client.edit_message(response, responseStr + result.url)
 		else:
 			print("User does not have access.")
 

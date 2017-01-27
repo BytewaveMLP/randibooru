@@ -18,4 +18,4 @@ Pulls random images from Derpibooru for your Discord channel enjoyment.
 6. ???
 7. Profit!
 
-If you don't want to setup Randibooru yourself, feel free to [invite OG Randibooru](https://discordapp.com/oauth2/authorize?client_id=206203876095950850&scope=bot&permissions=19456) to a server of your choice. **Note that the bot is hosted on a Raspberry Pi at home**, so don't expect much uptime unless I get a proper hosting solution.
+If you don't want to setup Randibooru yourself, feel free to [invite OG Randibooru](https://discordapp.com/oauth2/authorize?client_id=206203876095950850&scope=bot&permissions=19456) to a server of your choice. Please do not overload the bot, however, as requests are **logged**. I **will** find you if you mess anything up.

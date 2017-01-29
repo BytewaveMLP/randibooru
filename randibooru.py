@@ -30,24 +30,25 @@ async def on_message(message):
 		if requester.id not in USER_BLACKLIST:
 			query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):].strip() # Strip command from message text
 			print('Query:    ', query)
-			if query == '':
-				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images...')
-			else:
-				response = await client.send_message(message.channel, requester.mention + ' **Please wait**, searching for images with query `' + query + '`...')
+			client.send_typing(message.channel)
 
 			search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
 			results = list(search)
 
-			responseStr = requester.mention + (' (query: `' + query + '`)' if query != '' else '') + ' '
+			responseStr = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
 
 			if len(results) == 0:
 				print('Result:    No images found.')
-				await client.edit_message(response, responseStr + 'No images found.')
+				await client.send_message(message.channel, responseStr + ' No images found.')
 			else:
 				result = results[0]
 				print('Result:   ', result.url)
 
-				await client.edit_message(response, responseStr + result.url)
+				em = discord.Embed(title = "Derpibooru Image", description = ", ".join(result.tags), url = result.url)
+				em.set_image(url = result.image)
+				em.set_footer(text = "Randibooru - Made with <3 by Bytewave")
+
+				await client.send_message(message.channel, responseStr, embed = em)
 		else:
 			print("User does not have access.")
 

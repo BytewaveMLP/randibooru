@@ -30,7 +30,7 @@ async def on_message(message):
 
 		query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):].strip() # Strip command from message text
 		print('Query:    ', query)
-		client.send_typing(message.channel)
+		await client.send_typing(message.channel)
 
 		search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
 		results = list(search)

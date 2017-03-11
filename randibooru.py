@@ -23,7 +23,7 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
-	if message.content == "!rb" or message.content.startswith(COMMAND_PREFIX + COMMAND_NAME + " "):
+	if (message.content == COMMAND_PREFIX + COMMAND_NAME) or message.content.startswith(COMMAND_PREFIX + COMMAND_NAME + " "):
 		print('Request received!') # Debug and logging
 		requester = message.author
 		print('Requester:', requester.name, '|', requester.id)

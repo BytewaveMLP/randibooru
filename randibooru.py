@@ -5,6 +5,7 @@ from derpibooru import Search, sort
 import configparser
 import os.path
 import sys
+import traceback
 
 config = configparser.ConfigParser()
 
@@ -27,6 +28,7 @@ DISCORD_API_TOKEN    = config.get('API keys', 'Discord')
 DERPIBOORU_API_TOKEN = config.get('API keys', 'Derpibooru')
 COMMAND_PREFIX       = config.get('Command', 'Prefix', fallback='!')
 COMMAND_NAME         = config.get('Command', 'Name', fallback='rb')
+COMMAND              = COMMAND_PREFIX + COMMAND_NAME
 
 client = discord.Client()
 helpgame = discord.Game(name = COMMAND_PREFIX + COMMAND_NAME + " <derpi query>", url = "", type = 0)
@@ -40,13 +42,33 @@ async def on_ready():
 	await client.change_presence(game = helpgame, afk = False)
 
 @client.event
+async def on_error(event, *args, **kwargs):
+	ex = sys.exc_info()
+	print('!!!!!!')
+	print('ERROR:     ' + ex[0].__name__ + ' occured in ' + event + '!')
+	print('           ' + str(ex[1]))
+	print('Traceback:')
+	print("".join(traceback.format_tb(ex[2])), end = '')
+	print('!!!!!!')
+
+@client.event
+async def on_server_join(server):
+	general = server.default_channel
+	if server.me.permissions_in(general).send_messages:
+		await client.send_message(general, "**Hey there!** I'm Randibooru! I pull random images from Derpibooru with an optional Derpibooru query.\n"
+			+ "To get a random image, simply type `" + COMMAND + "` in chat, and I'll try to respond. You can optionally follow `" + COMMAND + "` with a Derpibooru query (info here: https://derpibooru.org/search/syntax), and I'll only pull images that match it.\n"
+			+ "Have fun!\n\n"
+			+ "*Made with <3 by Bytewave (https://github.com/BytewaveMLP/randibooru)*\n"
+			+ "Join my Discord server! https://discord.gg/AukVbRR")
+
+@client.event
 async def on_message(message):
-	if (message.content == COMMAND_PREFIX + COMMAND_NAME) or message.content.startswith(COMMAND_PREFIX + COMMAND_NAME + " "):
+	if (message.content == COMMAND) or message.content.startswith(COMMAND + " "):
 		print('Request received!') # Debug and logging
 		requester = message.author
 		print('Requester:', requester.name, '|', requester.id)
 
-		query = message.content[(len(COMMAND_PREFIX + COMMAND_NAME) + 1):].strip() # Strip command from message text
+		query = message.content[(len(COMMAND) + 1):].strip() # Strip command from message text
 		print('Query:    ', query)
 		await client.send_typing(message.channel)
 

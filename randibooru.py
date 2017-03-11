@@ -3,8 +3,6 @@ DERPIBOORU_API_TOKEN = ""
 COMMAND_PREFIX       = "!"
 COMMAND_NAME         = "rb"
 
-USER_BLACKLIST = []
-
 import discord
 import asyncio
 import random

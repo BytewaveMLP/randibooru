@@ -70,7 +70,7 @@ async def on_message(message):
 			color = random.randint(0, 16777215)
 
 			em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
-			em.set_image(url = result.)
+			em.set_image(url = result.representations['full'])
 			em.add_field(name = "Tags", value = tags, inline = False)
 			em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
 			em.add_field(name = "Favorites", value = result.faves, inline = True)

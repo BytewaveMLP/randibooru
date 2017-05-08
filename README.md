@@ -8,6 +8,7 @@ Pulls random images from Derpibooru for your Discord channel enjoyment.
   - `https://github.com/joshua-stone/DerPyBooru/zipball/master` (`derpybooru` currently serves an out-of-date version of the package)
   
   (You might want to look into `virtualenv`s to avoid polluting your global package space)
+
 2. `git clone https://github.com/BytewaveMLP/randibooru`
 3. Fill in your information for Derpibooru and Discord
   - Obtain a client ID and API key for Discord [here](https://discordapp.com/developers/applications/me)

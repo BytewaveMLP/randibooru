@@ -59,7 +59,8 @@ async def on_server_join(server):
 			+ "To get a random image, simply type `" + COMMAND + "` in chat, and I'll try to respond. You can optionally follow `" + COMMAND + "` with a Derpibooru query (info here: https://derpibooru.org/search/syntax), and I'll only pull images that match it.\n"
 			+ "Have fun!\n\n"
 			+ "*Made with <3 by Bytewave (https://github.com/BytewaveMLP/randibooru)*\n"
-			+ "Join my Discord server! https://discord.gg/AukVbRR")
+			+ "Join my Discord server! https://discord.gg/AukVbRR\n\n"
+			+ "**NOTE:** I will refuse to post images tagged with `explicit` in non-NSFW channels!")
 
 @client.event
 async def on_message(message):
@@ -72,16 +73,34 @@ async def on_message(message):
 		print('Query:    ', query)
 		await client.send_typing(message.channel)
 
-		search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
-		results = list(search)
-
 		responseStr = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
+
+		search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(1) # DerPyBooru searching
+
+		results = list(search)
 
 		if len(results) == 0:
 			print('Result:    No images found.')
 			await client.send_message(message.channel, responseStr + ' No images found.')
 		else:
-			result = results[0]
+			result = None
+
+			print('Channel:  ', message.channel.name)
+			if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
+				print('Type:      Safe channel')
+				for potential in results: # Leaving this in for future modification - need to patch DerPyBooru before this becomes relevant
+					if 'explicit' not in potential.tags:
+						result = potential
+			else:
+				print('Type:      NSFW channel')
+				result = results[0]
+
+			if result is None:
+				print('Result:    Failed to find any safe content (non-NSFW channel)')
+				await client.send_message(message.channel, responseStr + " The image I found wasn't safe! Try again, or call me in an NSFW channel for `explicit` images!")
+				print('========')
+				return
+			
 			print('Result:   ', result.url)
 
 			if len(result.tags) > 20:

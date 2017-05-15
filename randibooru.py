@@ -52,7 +52,7 @@ helpgame = discord.Game(name = COMMAND_PREFIX + COMMAND_NAME + " <derpi query>",
 @client.event
 async def on_ready():
 	log.info('Logged in as ' + client.user.name + ' (' + client.user.id + ')')
-	log.info('Use this link to invite me to your server: ' + discord.utils.oauth_url(client.user.id, permissions = discord.Permissions(permissions = 3072)))
+	log.info('Use this link to invite me to your server: ' + discord.utils.oauth_url(client.user.id, permissions = discord.Permissions(permissions = 19456)))
 	await client.change_presence(game = helpgame, afk = False)
 
 @client.event

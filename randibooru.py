@@ -83,7 +83,7 @@ async def on_message(message):
 
 		response_str = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
 
-		search  = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest', fallback = '50'))) # DerPyBooru searching
+		search = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest', fallback = '50'))) # DerPyBooru searching
 
 		results = list(search)
 

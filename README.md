@@ -59,4 +59,4 @@ If you're reporting an issue, please make sure to follow the issue template prov
 
 ## License
 
-Copyright (c) Bytewave, 2017. Licensed under [the MIT License](/LICENSE).
+Copyright (c) Eliot Partridge, 2016-17. Licensed under [the MIT License](/LICENSE).

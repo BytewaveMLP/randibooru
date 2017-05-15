@@ -33,7 +33,7 @@ else:
 	log.info('Edit config.ini before starting Randibooru.')
 	sys.exit(1)
 
-level = logging.getLevelName(config.get('Logging', 'Level'))
+level = logging.getLevelName(config.get('Logging', 'Level', fallback = 'INFO'))
 
 try:
 	log.setLevel(level = level)
@@ -42,8 +42,8 @@ except ValueError:
 
 DISCORD_API_TOKEN    = config.get('API keys', 'Discord')
 DERPIBOORU_API_TOKEN = config.get('API keys', 'Derpibooru')
-COMMAND_PREFIX       = config.get('Command', 'Prefix', fallback='!')
-COMMAND_NAME         = config.get('Command', 'Name', fallback='rb')
+COMMAND_PREFIX       = config.get('Command', 'Prefix', fallback = '!')
+COMMAND_NAME         = config.get('Command', 'Name', fallback = 'rb')
 COMMAND              = COMMAND_PREFIX + COMMAND_NAME
 
 client = discord.Client()
@@ -83,7 +83,7 @@ async def on_message(message):
 
 		response_str = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
 
-		search  = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest') or 50)) # DerPyBooru searching
+		search  = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest', fallback = '50'))) # DerPyBooru searching
 
 		results = list(search)
 

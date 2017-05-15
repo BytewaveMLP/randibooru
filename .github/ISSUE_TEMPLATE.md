@@ -1,0 +1,2 @@
+- **Randibooru version:** *self-hosted* or *public*
+- **Approximate time the issue was experienced:** YYYY-MM-DD HH:MM

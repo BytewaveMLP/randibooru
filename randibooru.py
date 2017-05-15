@@ -1,7 +1,7 @@
 import discord
 import asyncio
 import random
-from derpibooru import Search, sort
+import derpibooru
 import configparser
 import os.path
 import sys
@@ -83,7 +83,7 @@ async def on_message(message):
 
 		response_str = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
 
-		search  = Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest') or 50)) # DerPyBooru searching
+		search  = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest') or 50)) # DerPyBooru searching
 
 		results = list(search)
 

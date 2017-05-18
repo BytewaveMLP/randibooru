@@ -78,7 +78,7 @@ async def on_server_remove(server):
 
 @client.event
 async def on_message(message):
-	if (message.content == COMMAND) or message.content.startswith(COMMAND + " "):
+	if (message.content == COMMAND) or message.content.startswith(COMMAND + " ") and not message.author.bot:
 		requester = message.author
 		query = message.content[(len(COMMAND) + 1):].strip() # Strip command from message text
 		log_user_str = 'from ' + requester.name + ' (' + requester.id + ')' + (' with query ' + query if query != '' else '')

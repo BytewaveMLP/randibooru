@@ -73,6 +73,10 @@ async def on_server_join(server):
 			+ "**NOTE:** I will refuse to post images tagged with `explicit` in non-NSFW channels!")
 
 @client.event
+async def on_server_remove(server):
+	log.info('Removed from server ' + server.name + ' (' + server.id + ')')
+
+@client.event
 async def on_message(message):
 	if (message.content == COMMAND) or message.content.startswith(COMMAND + " "):
 		requester = message.author

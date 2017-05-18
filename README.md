@@ -12,6 +12,7 @@
 - [Usage](#usage)
 - [Maintainers](#maintainers)
 - [Contribute](#contribute)
+- [License](#license)
 
 ## Install
 
@@ -55,3 +56,7 @@ Just run the configured command in chat (`prefix + command`). By default, this i
 We accept PRs! If you have a change you'd like to submit to us, let us know! We'll consider adding it if we feel it's useful. We advise using a `virtualenv` set up in `.env/` to avoid polluting your global package space.
 
 If you're reporting an issue, please make sure to follow the issue template provided. Also, consider checking our [Trello](https://trello.com/b/stNAQarK/randibooru) first to ensure the issue isn't already being worked on, and make sure to avoid double-posting issues. If it's already been reported, we promise we'll get to it eventually!
+
+## License
+
+Copyright (c) Eliot Partridge, 2016-17. Licensed under [the MIT License](/LICENSE).

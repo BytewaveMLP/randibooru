@@ -100,7 +100,7 @@ async def on_message(message):
 			log.debug('Request ' + log_user_str + ' in channel ' + message.channel.name + ' (' + message.channel.id + ')')
 			if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
 				log.debug('Request ' + log_user_str + ' was sent in a SAFE channel')
-				for potential in results: # Leaving this in for future modification - need to patch DerPyBooru before this becomes relevant
+				for potential in results:
 					if 'explicit' not in potential.tags:
 						result = potential
 						break

@@ -133,7 +133,7 @@ async def on_message(message):
 			em.add_field(name = "Tags", value = tags, inline = False)
 			em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
 			em.add_field(name = "Favorites", value = result.faves, inline = True)
-			em.set_footer(text = "Randibooru - Made with <3 by Bytewave")
+			em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://avatars0.githubusercontent.com/u/5623770?v=3&s=460")
 
 			log.debug('Sending embed for request ' + log_user_str)
 			await client.send_message(message.channel, response_str, embed = em)

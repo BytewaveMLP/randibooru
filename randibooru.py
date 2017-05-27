@@ -120,9 +120,9 @@ async def on_message(message):
 			
 			log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 
-			if len(result.tags) > 20:
-				log.debug('Limiting displayed tags to 20 for request ' + log_user_str + ' to keep Discord from yelling at us')
-				tags = ", ".join(result.tags[:20]) + "..."
+			if len(result.tags) > 15:
+				log.debug('Limiting displayed tags to 15 for request ' + log_user_str + ' to keep Discord from yelling at us')
+				tags = ", ".join(result.tags[:15]) + "..."
 			else:
 				tags = ", ".join(result.tags)
 

@@ -120,16 +120,16 @@ async def on_message(message):
 			
 			log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 
-			if len(result.tags) > 15:
-				log.debug('Limiting displayed tags to 15 for request ' + log_user_str + ' to keep Discord from yelling at us')
-				tags = ", ".join(result.tags[:15]) + "..."
+			if len(result.tags) > 20:
+				log.debug('Limiting displayed tags to 20 for request ' + log_user_str + ' to keep Discord from yelling at us')
+				tags = ", ".join(result.tags[:20]) + "..."
 			else:
 				tags = ", ".join(result.tags)
 
 			color = random.randint(0, 16777215)
 
-			em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color, description = (result.description[:250] + '...') if len(result.description) > 250 else result.description)
-			em.set_author(name = "Uploaded by: " + result.uploader, url = ("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty)
+			em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
+			em.set_author(name = "Uploaded by: " + result.uploader, url = (("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty))
 			em.set_image(url = result.representations['full'])
 			em.add_field(name = "Tags", value = tags, inline = False)
 			em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)

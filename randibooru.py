@@ -97,22 +97,26 @@ async def on_message(message):
 		else:
 			result = None
 
-			log.debug('Request ' + log_user_str + ' in channel ' + message.channel.name + ' (' + message.channel.id + ')')
-			if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
-				log.debug('Request ' + log_user_str + ' was sent in a SAFE channel')
-				for potential in results:
-					if 'explicit' not in potential.tags:
-						result = potential
-						break
-					log.debug('Skipping unsuitable image ' + potential.url + ' for request ' + log_user_str)
-			else:
-				log.debug('Request ' + log_user_str + ' was sent in an NSFW channel')
-				result = results[0]
+			if not message.channel.is_private:
+				log.debug('Request ' + log_user_str + ' in channel ' + message.channel.name + ' (' + message.channel.id + ')')
+				if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
+					log.debug('Request ' + log_user_str + ' was sent in a SAFE channel')
+					for potential in results:
+						if 'explicit' not in potential.tags:
+							result = potential
+							break
+						log.debug('Skipping unsuitable image ' + potential.url + ' for request ' + log_user_str)
+				else:
+					log.debug('Request ' + log_user_str + ' was sent in an NSFW channel')
+					result = random.choice(results)
 
-			if result is None:
-				log.info('Couldn\'t find any safe images to post for request ' + log_user_str)
-				await client.send_message(message.channel, response_str + " - *I couldn't find any safe images! Try again, or call me in an NSFW channel for `explicit` images!*")
-				return
+				if result is None:
+					log.info('Couldn\'t find any safe images to post for request ' + log_user_str)
+					await client.send_message(message.channel, response_str + " - *I couldn't find any safe images! Try again, or call me in an NSFW channel for `explicit` images!*")
+					return
+			else:
+				log.debug('Request' + log_user_str + ' is a PM')
+				result = random.choice(results)
 			
 			log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 

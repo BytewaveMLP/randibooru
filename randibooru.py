@@ -115,7 +115,7 @@ async def on_message(message):
 					await client.send_message(message.channel, response_str + " - *I couldn't find any safe images! Try again, or call me in an NSFW channel for `explicit` images!*")
 					return
 			else:
-				log.debug('Request' + log_user_str + ' is a PM')
+				log.debug('Request ' + log_user_str + ' is a PM')
 				result = random.choice(results)
 			
 			log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)

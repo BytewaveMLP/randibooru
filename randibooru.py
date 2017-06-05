@@ -87,57 +87,63 @@ async def on_message(message):
 
 		response_str = requester.mention + (' (query: `' + query + '`)' if query != '' else '')
 
-		search = derpibooru.Search().query(query).key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest', fallback = '50'))) # DerPyBooru searching
+		search = derpibooru.Search().key(DERPIBOORU_API_TOKEN).sort_by(derpibooru.sort.RANDOM).limit(int(config.get('Other', 'ImagesPerRequest', fallback = '50'))) # DerPyBooru searching
 
-		results = list(search)
+		result = None
 
-		if len(results) == 0:
-			log.info('No results found for request ' + log_user_str)
-			await client.send_message(message.channel, response_str + ' - *No images found.*')
-		else:
-			result = None
-
-			if not message.channel.is_private:
-				log.debug('Request ' + log_user_str + ' in channel ' + message.channel.name + ' (' + message.channel.id + ')')
-				if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
-					log.debug('Request ' + log_user_str + ' was sent in a SAFE channel')
-					for potential in results:
-						if 'explicit' not in potential.tags:
-							result = potential
-							break
-						log.debug('Skipping unsuitable image ' + potential.url + ' for request ' + log_user_str)
-				else:
-					log.debug('Request ' + log_user_str + ' was sent in an NSFW channel')
-					result = random.choice(results)
-
-				if result is None:
-					log.info('Couldn\'t find any safe images to post for request ' + log_user_str)
-					await client.send_message(message.channel, response_str + " - *I couldn't find any safe images! Try again, or call me in an NSFW channel for `explicit` images!*")
+		if not message.channel.is_private:
+			log.debug('Request ' + log_user_str + ' in channel ' + message.channel.name + ' (' + message.channel.id + ')')
+			if message.channel.name != 'nsfw' and not message.channel.name.startswith('nsfw-'):
+				log.debug('Request ' + log_user_str + ' was sent in a SAFE channel - injecting -explicit into query')
+				search = search.query(query, '-explicit')
+				results = list(search)
+				if len(results) == 0:
+					log.info('No SFW results found for request ' + log_user_str)
+					await client.send_message(message.channel, response_str + ' - *No safe-for-work images found.*')
 					return
+				for potential in results:
+					if 'explicit' not in potential.tags:
+						result = potential
+						break
+					log.debug('Skipping unsuitable image ' + potential.url + ' for request ' + log_user_str)
 			else:
-				log.debug('Request ' + log_user_str + ' is a PM')
+				log.debug('Request ' + log_user_str + ' was sent in an NSFW channel')
+				search = search.query(query)
+				results = list(search)
+				if len(results) == 0:
+					log.info('No results found for request ' + log_user_str)
+					await client.send_message(message.channel, response_str + ' - *No images found.*')
+					return
 				result = random.choice(results)
-			
-			log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 
-			if len(result.tags) > 20:
-				log.debug('Limiting displayed tags to 20 for request ' + log_user_str + ' to keep Discord from yelling at us')
-				tags = ", ".join(result.tags[:20]) + "..."
-			else:
-				tags = ", ".join(result.tags)
+			if result is None:
+				log.info('Couldn\'t find any safe images to post for request ' + log_user_str)
+				await client.send_message(message.channel, response_str + " - *I couldn't find any safe images! Try again, or call me in an NSFW channel for `explicit` images!*")
+				return
+		else:
+			log.debug('Request ' + log_user_str + ' is a PM')
+			result = random.choice(results)
+		
+		log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 
-			color = random.randint(0, 16777215)
+		if len(result.tags) > 20:
+			log.debug('Limiting displayed tags to 20 for request ' + log_user_str + ' to keep Discord from yelling at us')
+			tags = ", ".join(result.tags[:20]) + "..."
+		else:
+			tags = ", ".join(result.tags)
 
-			em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
-			em.set_author(name = "Uploaded by: " + result.uploader, url = ("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty)
-			em.set_image(url = result.representations['full'])
-			em.add_field(name = "Tags", value = tags, inline = False)
-			em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
-			em.add_field(name = "Favorites", value = result.faves, inline = True)
-			em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://avatars0.githubusercontent.com/u/5623770?v=3&s=460")
+		color = random.randint(0, 16777215)
 
-			log.debug('Sending embed for request ' + log_user_str)
-			await client.send_message(message.channel, response_str, embed = em)
+		em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
+		em.set_author(name = "Uploaded by: " + result.uploader, url = ("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty)
+		em.set_image(url = result.representations['full'])
+		em.add_field(name = "Tags", value = tags, inline = False)
+		em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
+		em.add_field(name = "Favorites", value = result.faves, inline = True)
+		em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://avatars0.githubusercontent.com/u/5623770?v=3&s=460")
+
+		log.debug('Sending embed for request ' + log_user_str)
+		await client.send_message(message.channel, response_str, embed = em)
 
 log.info('Randibooru bot starting...')
 

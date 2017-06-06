@@ -122,6 +122,12 @@ async def on_message(message):
 				return
 		else:
 			log.debug('Request ' + log_user_str + ' is a PM')
+			search = search.query(query)
+			results = list(search)
+			if len(results) == 0:
+				log.info('No results found for request ' + log_user_str)
+				await client.send_message(message.channel, response_str + ' - *No images found.*')
+				return
 			result = random.choice(results)
 		
 		log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)

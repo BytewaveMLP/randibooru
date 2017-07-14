@@ -40,6 +40,8 @@ try:
 except ValueError:
 	log.setLevel(level = logging.INFO)
 
+NUM_TAGS_IN_EMBED = 10
+
 DISCORD_API_TOKEN    = config.get('API keys', 'Discord')
 DERPIBOORU_API_TOKEN = config.get('API keys', 'Derpibooru')
 COMMAND_PREFIX       = config.get('Command', 'Prefix', fallback = '!')
@@ -132,9 +134,9 @@ async def on_message(message):
 		
 		log.info('Found suitable result ' + result.url + ' for request ' + log_user_str)
 
-		if len(result.tags) > 20:
-			log.debug('Limiting displayed tags to 20 for request ' + log_user_str + ' to keep Discord from yelling at us')
-			tags = ", ".join(result.tags[:20]) + "..."
+		if len(result.tags) > NUM_TAGS_IN_EMBED:
+			log.debug('Limiting displayed tags to ' + str(NUM_TAGS_IN_EMBED) + ' for request ' + log_user_str + ' to keep Discord from yelling at us')
+			tags = ", ".join(result.tags[:NUM_TAGS_IN_EMBED]) + "..."
 		else:
 			tags = ", ".join(result.tags)
 
@@ -149,7 +151,11 @@ async def on_message(message):
 		em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://avatars0.githubusercontent.com/u/5623770?v=3&s=460")
 
 		log.debug('Sending embed for request ' + log_user_str)
-		await client.send_message(message.channel, response_str, embed = em)
+		try:
+			await client.send_message(message.channel, response_str, embed = em)
+		except discord.errors.HTTPException as err:
+			log.error('HTTPException occurred while serving request ' + log_user_str + ' - ' + str(err))
+			await client.send_message(message.channel, response_str + ' - *An internal error occurred while processing your request. Please try again.*')
 
 log.info('Randibooru bot starting...')
 

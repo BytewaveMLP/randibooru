@@ -27,6 +27,9 @@
 1. `$ git clone https://github.com/BytewaveMLP/randibooru`
 2. **OPTIONAL:** Set up a `virtualenv` in `.env/`
 3. `$ pip install -r requirements.txt`
+
+    - **NOTE:** If you receive errors when `pip` is installing `derpybooru`, this is due to an upstream bug in DerPyBooru. The package maintainer has not been around to fix their `setup.py` script, so for now, you'll have to install both `requests` and `derpybooru` **by hand**, **in that order** using `pip install`. Sorry about this, but it's out of my hands. 
+
 4. `$ python3 randibooru.py`
 5. `$ $EDITOR config.ini`
 

@@ -144,7 +144,7 @@ async def on_message(message):
 
 		em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
 		em.set_author(name = "Uploaded by: " + result.uploader, url = ("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty)
-		em.set_image(url = result.representations['full'])
+		em.set_image(url = result.representations['large'])
 		em.add_field(name = "Tags", value = tags, inline = False)
 		em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
 		em.add_field(name = "Favorites", value = result.faves, inline = True)

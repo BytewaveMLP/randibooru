@@ -41,7 +41,7 @@ except ValueError:
 	log.setLevel(level = logging.INFO)
 
 NUM_TAGS_IN_EMBED = 10
-MAX_TAG_STR_LEN   = 150
+MAX_TAG_STR_LEN   = 100
 
 DISCORD_API_TOKEN    = config.get('API keys', 'Discord')
 DERPIBOORU_API_TOKEN = config.get('API keys', 'Derpibooru')

@@ -20,9 +20,9 @@ if os.path.isfile('./config.ini'):
 	config.read('./config.ini')
 else:
 	config['Command'] = {'Prefix': '!',
-	                     'Name': 'rb'}
+						 'Name': 'rb'}
 	config['API keys'] = {'Derpibooru': '',
-	                      'Discord': ''}
+						  'Discord': ''}
 	config['Logging'] = {'Level': 'INFO'}
 	config['Other'] = {'ImagesPerRequest': 50}
 

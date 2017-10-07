@@ -41,6 +41,7 @@ except ValueError:
 	log.setLevel(level = logging.INFO)
 
 NUM_TAGS_IN_EMBED = 10
+MAX_TAG_STR_LEN   = 150
 
 DISCORD_API_TOKEN    = config.get('API keys', 'Discord')
 DERPIBOORU_API_TOKEN = config.get('API keys', 'Derpibooru')
@@ -140,15 +141,18 @@ async def on_message(message):
 		else:
 			tags = ", ".join(result.tags)
 
+                if len(tags) > MAX_TAG_STR_LEN:
+                    tags = tags[:MAX_TAG_STR_LEN] + "..."
+
 		color = random.randint(0, 16777215)
 
-		em = discord.Embed(title = "Derpibooru Image", url = result.url, color = color)
+		em = discord.Embed(title = "Derpibooru URL", url = result.url, color = color)
 		em.set_author(name = "Uploaded by: " + result.uploader, url = ("https://derpibooru.org/profiles/" + result.uploader) if result.uploader != "Background Pony" else discord.Embed.Empty)
 		em.set_image(url = result.representations['large'])
 		em.add_field(name = "Tags", value = tags, inline = False)
 		em.add_field(name = "Score", value = "{score} (+{upvotes}/-{downvotes})".format(score = result.score, upvotes = result.upvotes, downvotes = result.downvotes), inline = True)
 		em.add_field(name = "Favorites", value = result.faves, inline = True)
-		em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://avatars0.githubusercontent.com/u/5623770?v=3&s=460")
+		em.set_footer(text = "Randibooru - Made with <3 by Bytewave", icon_url = "https://i.imgur.com/3uHsFKL.jpg")
 
 		log.debug('Sending embed for request ' + log_user_str)
 		try:

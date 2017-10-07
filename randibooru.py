@@ -141,8 +141,8 @@ async def on_message(message):
 		else:
 			tags = ", ".join(result.tags)
 
-                if len(tags) > MAX_TAG_STR_LEN:
-                    tags = tags[:MAX_TAG_STR_LEN] + "..."
+		if len(tags) > MAX_TAG_STR_LEN:
+			tags = tags[:MAX_TAG_STR_LEN] + "..."
 
 		color = random.randint(0, 16777215)
 
